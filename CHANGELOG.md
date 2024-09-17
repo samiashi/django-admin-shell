@@ -8,6 +8,7 @@
     * Add support for Django 5.0, 5.1, 5.2 and 6.0
     * Fixed bug with dynamic models in the shell import system
     * Added error handling for model imports that don't exist in their module
+    * Added ADMIN_SHELL_CALLBACK hook for auditing or logging shell executions
 
 ## 2.0.1 (2023-11-20)
 

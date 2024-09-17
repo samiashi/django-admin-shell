@@ -72,3 +72,8 @@ ADMIN_SHELL_CLEAR_SCOPE_ON_CLEAR_HISTORY = from_settings_or_default(
     'ADMIN_SHELL_CLEAR_SCOPE_ON_CLEAR_HISTORY',
     False
 )
+
+ADMIN_SHELL_CALLBACK = from_settings_or_default(
+    'ADMIN_SHELL_CALLBACK',
+    None
+)

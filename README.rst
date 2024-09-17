@@ -232,6 +232,36 @@ If you want to persist indefinitly all declared variables on the shell, set this
 **BEWARE**: *leaving this disabled is not recomended on production code!*
 
 
+ADMIN_SHELL_CALLBACK
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*type* : **string**
+
+*default* : **None**
+
+This setting allows you to specify a callback function that will be called after each code execution in the admin shell. The callback function should be provided as a string in the format "path.to.module.function_name".
+
+The callback function will receive a dictionary with the following keys:
+- 'request': The current request object
+- 'user': The user who executed the code
+- 'code': The code that was executed
+- 'response': The result of the code execution
+- 'timestamp': The time when the code was executed
+
+This can be useful for logging or auditing purposes (e.g. saving executed code and its result to database). For example:
+
+.. code-block:: python
+
+    def my_callback(callback_data):
+        print(f"User {callback_data['user']} executed code at {callback_data['timestamp']}")
+
+    # In your settings.py
+    ADMIN_SHELL_CALLBACK = 'path.to.my_callback'
+
+If the callback function is defined but cannot be imported or raises an exception, a warning will be logged.
+
+**Note**: Be careful when implementing the callback function, as it will be called for every code execution in the admin shell.
+
+
 Code examples
 -------------
 
