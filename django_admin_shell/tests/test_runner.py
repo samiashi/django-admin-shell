@@ -1,5 +1,4 @@
-# encoding: utf-8
-import mock
+from unittest import mock
 import django
 from django.test import TestCase
 from django_admin_shell.views import Runner
@@ -75,7 +74,7 @@ class RunnerTest(TestCase):
         result = self.runner.run_code(code)
         assert result["code"] == code
         assert result["status"] == "success"
-        assert result["out"] == "{0}\n".format(str(django.VERSION))
+        assert result["out"] == f"{str(django.VERSION)}\n"
 
     def test_interact_with_db(self):
         """

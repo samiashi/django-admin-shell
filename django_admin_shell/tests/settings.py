@@ -1,5 +1,4 @@
 import os
-import django
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '__secret__key__'
 DEBUG = True
@@ -26,11 +25,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# MIDDLEWARE_CLASSES setting is deprecated in Django 1.10
-# For tests and only for django < 1.10
-if django.VERSION < (1, 10):
-    MIDDLEWARE_CLASSES = MIDDLEWARE
 
 ROOT_URLCONF = 'django_admin_shell.tests.urls'
 

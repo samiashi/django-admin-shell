@@ -1,4 +1,3 @@
-# encoding:utf-8
 from setuptools import setup, find_packages
 from django_admin_shell import __version__ as version
 

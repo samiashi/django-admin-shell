@@ -1,4 +1,3 @@
-# encoding: utf-8
 from django.apps import apps
 from django.views.generic import FormView
 from .forms import ShellForm
@@ -34,7 +33,7 @@ import traceback
 import warnings
 
 
-class Importer(object):
+class Importer:
 
     def __init__(self, import_django=None, import_models=None, extra_imports=None):
         self.import_django = import_django or ADMIN_SHELL_IMPORT_DJANGO
@@ -59,9 +58,7 @@ class Importer(object):
                         module = importlib.import_module(module_name)
                     except ImportError as e:
                         warnings.warn(
-                            "django_admin_shell - autoimport warning :: {msg}".format(
-                                msg=str(e)
-                            ),
+                            f"django_admin_shell - autoimport warning :: {str(e)}",
                             ImportWarning
                         )
                         continue
@@ -73,10 +70,8 @@ class Importer(object):
                         else:
                             warnings.warn(
                                 "django_admin_shell - autoimport warning :: "
-                                "AttributeError module '{mod}' has no attribute '{attr}'".format(
-                                    mod=module_name,
-                                    attr=symbol_name
-                                ),
+                                f"AttributeError module '{module_name}' has no attribute "
+                                f"'{symbol_name}'",
                                 ImportWarning
                             )
 
@@ -128,7 +123,7 @@ class Importer(object):
         return buf
 
 
-class Runner(object):
+class Runner:
 
     def __init__(self):
         self.importer = Importer()
@@ -164,7 +159,7 @@ class Runner(object):
 
 def get_py_version():
     ver = sys.version_info
-    return "{0}.{1}.{2}".format(ver.major, ver.minor, ver.micro)
+    return f"{ver.major}.{ver.minor}.{ver.micro}"
 
 
 def get_dj_version():
@@ -184,10 +179,7 @@ class ShellView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         """Override to check settings"""
-        if django.VERSION < (1, 10):
-            is_auth = request.user.is_authenticated()
-        else:
-            is_auth = request.user.is_authenticated
+        is_auth = request.user.is_authenticated
 
         if not ADMIN_SHELL_ENABLE:
             return HttpResponseNotFound("Not found: Django admin shell is not enabled")
@@ -203,7 +195,7 @@ class ShellView(FormView):
             return HttpResponseForbidden(
                 "Forbidden: To access Django admin shell you must be superuser"
             )
-        return super(ShellView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_output(self):
         if self.output is None:
@@ -231,7 +223,7 @@ class ShellView(FormView):
         # Clear output history - set empty list and save
         if request.GET.get("clear_history", "no") == "yes":
             self.clear_output()
-        return super(ShellView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         code = form.cleaned_data.get("code", "")
@@ -239,11 +231,11 @@ class ShellView(FormView):
             result = self.runner.run_code(code)
             self.add_to_outout(result)
             self.save_output()
-        return super(ShellView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         """Add output to context"""
-        ctx = super(ShellView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx['site_header'] = "Django admin shell"
         ctx['has_permission'] = True
         ctx['output'] = self.get_output()

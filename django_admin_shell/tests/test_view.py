@@ -1,5 +1,3 @@
-# encoding: utf-8
-import django
 from django.contrib.auth import get_user_model
 from django.test.utils import override_settings
 from django.test import (
@@ -9,12 +7,9 @@ from django.test import (
 
 from django_admin_shell.settings import ADMIN_SHELL_SESSION_KEY
 from django_admin_shell.urls import ShellView
-import mock
+from unittest import mock
 
-if django.VERSION < (1, 10):
-    from django.core.urlresolvers import reverse
-else:
-    from django.urls.base import reverse
+from django.urls.base import reverse
 
 
 class ShellViewTest(TestCase):

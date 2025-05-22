@@ -1,5 +1,4 @@
-# encoding: utf-8
-import mock
+from unittest import mock
 from django.test import TestCase
 from django_admin_shell.views import Importer
 from django_admin_shell.tests.models import TestModel
