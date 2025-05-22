@@ -20,11 +20,11 @@ You can use similar as `python manage shell` without reloading the environment.
 
 
 * Tested by tox with:
-    - Python : 3.7, 3.8, 3.10
-    - Django : 2.0, 2.1, 2.2, 3.0, 3.1, 3.2, 4.0, 4.2
+    - Python : 3.9, 3.10, 3.11, 3.12, 3.13
+    - Django : 4.2, 5.0, 5.1, 5.2
 
 * Require:
-    - Django >= 1.10
+    - Django >= 4.2
 
 * Tested on browsers
     - OK - Chromium  108 - Ubuntu 20.04
@@ -62,15 +62,15 @@ Install
 
 1. Install::
 
-    pip install django-admin-shell
+    uv pip install django-admin-shell
 
     or
 
-    pip install git+https://github.com/djk2/django-admin-shell.git
+    uv pip install git+https://github.com/djk2/django-admin-shell.git
 
     or after download zip
 
-    pip install django-admin-shell.zip
+    uv pip install django-admin-shell.zip
 
 
 2. Add `django_admin_shell` to your INSTALLED_APPS setting
@@ -124,7 +124,7 @@ Try `django-admin-shell` using simple demo app:
 
 3. Install requirements:
 
-   pip install -r requirements.txt
+   uv pip install -r requirements.txt
 
 4. Run demo project
 
