@@ -28,7 +28,7 @@ setup(
         'static/django_admin_shell/fonts/*',
         'static/django_admin_shell/css/*',
     ]},
-    tests_require=['Django', 'flake8', 'mock'],
+    tests_require=['Django', 'ruff'],
     include_package_data=True,
     zip_safe=False,
     install_requires=['Django>=2.0'],
