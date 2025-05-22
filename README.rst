@@ -9,10 +9,9 @@ django-admin-shell
     :target: https://github.com/djk2/django-admin-shell/actions/workflows/tests.yaml/
     :alt: GitHub Actions
 
-
-.. image:: https://requires.io/github/djk2/django-admin-shell/requirements.svg?branch=master
-    :target: https://requires.io/github/djk2/django-admin-shell/requirements/?branch=master
-    :alt: Requirements Status
+.. image:: https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue
+    :target: https://github.com/djk2/django-admin-shell/blob/master/tox.ini
+    :alt: Python Versions
 
 
 Django application can execute python code in your project's environment on django admin site.
