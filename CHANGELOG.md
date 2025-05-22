@@ -1,5 +1,12 @@
 # CHANGELOG for django-admin-shell
 
+## 3.0.0 (2025-05-22)
+
+    * Drop support for Python 3.7 and 3.8
+    * Drop support for Django < 4.2
+    * Add support for Python 3.9, 3.11, 3.12 and 3.13
+    * Add support for Django 5.0, 5.1 and 5.2
+
 ## 2.0.1 (2023-11-20)
 
     * Add missing `bootstrap.min.css.map` file - refer to issue #8
