@@ -92,15 +92,29 @@ class Importer:
         Like:
         "reverse" -> "django.urls.reverse"
         """
-        if self._scope is None:
-            self._scope = {}
-            for module_name, symbols in self.get_modules().items():
+        if self._scope is not None:
+            return self._scope
+
+        self._scope = {}
+        for module_name, symbols in self.get_modules().items():
+            try:
                 module = importlib.import_module(module_name)
                 for symbol_name in symbols:
-                    self._scope[symbol_name] = getattr(
-                        module,
-                        symbol_name
-                    )
+                    try:
+                        self._scope[symbol_name] = getattr(module, symbol_name)
+                    except AttributeError:
+                        # Skip attributes that don't exist (like dynamic models)
+                        warnings.warn(
+                            f"django_admin_shell - could not import '{symbol_name}' "
+                            f"from '{module_name}'",
+                            ImportWarning
+                        )
+            except ImportError:
+                # Skip modules that can't be imported
+                warnings.warn(
+                    f"django_admin_shell - could not import module '{module_name}'",
+                    ImportWarning
+                )
 
         return self._scope
 

@@ -6,6 +6,8 @@
     * Drop support for Django < 4.2
     * Add support for Python 3.9, 3.11, 3.12 and 3.13
     * Add support for Django 5.0, 5.1 and 5.2
+    * Fixed bug with dynamic models in the shell import system
+    * Added error handling for model imports that don't exist in their module
 
 ## 2.0.1 (2023-11-20)
 
