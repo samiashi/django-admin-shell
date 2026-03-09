@@ -1,11 +1,11 @@
 # CHANGELOG for django-admin-shell
 
-## 3.0.0 (2025-05-22)
+## 3.0.0 (2026-03-09)
 
     * Drop support for Python 3.7 and 3.8
     * Drop support for Django < 4.2
-    * Add support for Python 3.9, 3.11, 3.12 and 3.13
-    * Add support for Django 5.0, 5.1 and 5.2
+    * Add support for Python 3.11, 3.12, 3.13 and 3.14
+    * Add support for Django 5.0, 5.1, 5.2 and 6.0
     * Fixed bug with dynamic models in the shell import system
     * Added error handling for model imports that don't exist in their module
 

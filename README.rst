@@ -9,7 +9,7 @@ django-admin-shell
     :target: https://github.com/djk2/django-admin-shell/actions/workflows/tests.yaml/
     :alt: GitHub Actions
 
-.. image:: https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue
+.. image:: https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue
     :target: https://github.com/djk2/django-admin-shell/blob/master/tox.ini
     :alt: Python Versions
 
@@ -19,8 +19,8 @@ You can use similar as `python manage shell` without reloading the environment.
 
 
 * Tested by tox with:
-    - Python : 3.9, 3.10, 3.11, 3.12, 3.13
-    - Django : 4.2, 5.0, 5.1, 5.2
+    - Python : 3.10, 3.11, 3.12, 3.13, 3.14
+    - Django : 4.2, 5.0, 5.1, 5.2, 6.0
 
 * Require:
     - Django >= 4.2
