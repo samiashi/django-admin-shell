@@ -27,9 +27,8 @@ setup(
         'static/django_admin_shell/fonts/*',
         'static/django_admin_shell/css/*',
     ]},
-    tests_require=['Django', 'ruff'],
-    include_package_data=True,
     zip_safe=False,
+    python_requires='>=3.10',
     install_requires=['Django>=4.2'],
     classifiers=[
         'Environment :: Web Environment',
@@ -39,7 +38,6 @@ setup(
         'Framework :: Django :: 5.1',
         'Framework :: Django :: 5.2',
         'Framework :: Django :: 6.0',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
