@@ -13,7 +13,6 @@ from django.urls.base import reverse
 
 
 class ShellViewTest(TestCase):
-
     url = None
     user = None
 
@@ -78,7 +77,9 @@ class ShellViewTest(TestCase):
 
         # ADMIN_SHELL_ONLY_FOR_SUPERUSER = False
         # User.is_superuser = False
-        with mock.patch("django_admin_shell.views.ADMIN_SHELL_ONLY_FOR_SUPERUSER", False):
+        with mock.patch(
+            "django_admin_shell.views.ADMIN_SHELL_ONLY_FOR_SUPERUSER", False
+        ):
             response = self.client_auth.get(self.url)
             assert response.status_code == 200
 
@@ -135,7 +136,7 @@ class ShellViewTest(TestCase):
         assert len(session) == 1
         assert session[0]["code"] == code
         assert session[0]["status"] == "success"
-        assert 'a' in self.view.runner.importer.get_scope()
+        assert "a" in self.view.runner.importer.get_scope()
 
         # get django admin shell site after run simple code
         response = self.client_auth.get(self.url)
@@ -171,7 +172,7 @@ class ShellViewTest(TestCase):
         assert response.context["output"] == []
         assert ADMIN_SHELL_SESSION_KEY in self.client_auth.session
         assert self.client_auth.session[ADMIN_SHELL_SESSION_KEY] == []
-        assert 'a' in self.view.runner.importer.get_scope()
+        assert "a" in self.view.runner.importer.get_scope()
 
     @override_settings(DEBUG=True)
     def test_clear_scope(self):
@@ -193,22 +194,25 @@ class ShellViewTest(TestCase):
         assert len(session) == 1
         assert session[0]["code"] == code
         assert session[0]["status"] == "success"
-        assert 'a' in self.view.runner.importer.get_scope()
+        assert "a" in self.view.runner.importer.get_scope()
 
         # Clear all outputs (run history) with clear scope
-        with mock.patch("django_admin_shell.views.ADMIN_SHELL_CLEAR_SCOPE_ON_CLEAR_HISTORY", True):
+        with mock.patch(
+            "django_admin_shell.views.ADMIN_SHELL_CLEAR_SCOPE_ON_CLEAR_HISTORY", True
+        ):
             response = self.client_auth.get(self.url, {"clear_history": "yes"})
         assert response.status_code == 200
         assert response.context["output"] == []
         assert ADMIN_SHELL_SESSION_KEY in self.client_auth.session
         assert self.client_auth.session[ADMIN_SHELL_SESSION_KEY] == []
-        assert 'a' not in self.view.runner.importer.get_scope()
+        assert "a" not in self.view.runner.importer.get_scope()
 
     @override_settings(DEBUG=True)
     @mock.patch(
-        'django_admin_shell.views.ADMIN_SHELL_CALLBACK',
-        'django_admin_shell.tests.utils.callback')
-    @mock.patch('django_admin_shell.tests.utils.callback')
+        "django_admin_shell.views.ADMIN_SHELL_CALLBACK",
+        "django_admin_shell.tests.utils.callback",
+    )
+    @mock.patch("django_admin_shell.tests.utils.callback")
     def test_callback_function(self, mock_callback) -> None:
         """
         Show that the callback function is called with the correct arguments.
@@ -222,27 +226,28 @@ class ShellViewTest(TestCase):
         assert mock_callback.called
 
         callback_data = mock_callback.call_args[0][0]
-        assert 'request' in callback_data
-        assert 'user' in callback_data
-        assert 'code' in callback_data
-        assert 'response' in callback_data
-        assert 'timestamp' in callback_data
-        assert callback_data['code'] == 'print("Hello, World!")'
-        assert callback_data['response']['status'] == 'success'
-        assert callback_data['response']['out'] == 'Hello, World!\n'
+        assert "request" in callback_data
+        assert "user" in callback_data
+        assert "code" in callback_data
+        assert "response" in callback_data
+        assert "timestamp" in callback_data
+        assert callback_data["code"] == 'print("Hello, World!")'
+        assert callback_data["response"]["status"] == "success"
+        assert callback_data["response"]["out"] == "Hello, World!\n"
 
         assert response.status_code == 302
         session = self.client_auth.session[ADMIN_SHELL_SESSION_KEY]
         assert len(session) == 1
-        assert session[0]['code'] == 'print("Hello, World!")'
-        assert session[0]['status'] == 'success'
-        assert session[0]['out'] == 'Hello, World!\n'
+        assert session[0]["code"] == 'print("Hello, World!")'
+        assert session[0]["status"] == "success"
+        assert session[0]["out"] == "Hello, World!\n"
 
     @override_settings(DEBUG=True)
     @mock.patch(
-        'django_admin_shell.views.ADMIN_SHELL_CALLBACK',
-        'django_admin_shell.tests.utils.callback')
-    @mock.patch('django_admin_shell.tests.utils.callback')
+        "django_admin_shell.views.ADMIN_SHELL_CALLBACK",
+        "django_admin_shell.tests.utils.callback",
+    )
+    @mock.patch("django_admin_shell.tests.utils.callback")
     def test_callback_function_error(self, mock_callback) -> None:
         self.user.is_staff = True
         self.user.is_superuser = True
@@ -254,20 +259,23 @@ class ShellViewTest(TestCase):
         mock_callback.side_effect = mock_callback_error
 
         with self.assertWarns(RuntimeWarning):
-            response = self.client_auth.post(self.url, {"code": 'print("Hello, World!")'})
+            response = self.client_auth.post(
+                self.url, {"code": 'print("Hello, World!")'}
+            )
 
         assert response.status_code == 302
         session = self.client_auth.session[ADMIN_SHELL_SESSION_KEY]
         assert len(session) == 1
-        assert session[0]['code'] == 'print("Hello, World!")'
-        assert session[0]['status'] == 'success'
-        assert session[0]['out'] == 'Hello, World!\n'
+        assert session[0]["code"] == 'print("Hello, World!")'
+        assert session[0]["status"] == "success"
+        assert session[0]["out"] == "Hello, World!\n"
 
     @override_settings(DEBUG=True)
     @mock.patch(
-        'django_admin_shell.views.ADMIN_SHELL_CALLBACK',
-        'django_admin_shell.tests.utils.callback')
-    @mock.patch('django_admin_shell.tests.utils.callback')
+        "django_admin_shell.views.ADMIN_SHELL_CALLBACK",
+        "django_admin_shell.tests.utils.callback",
+    )
+    @mock.patch("django_admin_shell.tests.utils.callback")
     def test_callback_not_called_for_empty_code(self, mock_callback) -> None:
         self.user.is_staff = True
         self.user.is_superuser = True

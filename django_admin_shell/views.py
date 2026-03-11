@@ -4,10 +4,7 @@ from django.views.generic import FormView
 from django.utils.module_loading import import_string
 
 from .forms import ShellForm
-from django.http import (
-    HttpResponseForbidden,
-    HttpResponseNotFound
-)
+from django.http import HttpResponseForbidden, HttpResponseNotFound
 from django.conf import settings
 from django.utils import timezone
 
@@ -28,7 +25,7 @@ from .settings import (
     ADMIN_SHELL_IMPORT_DJANGO_MODULES,
     ADMIN_SHELL_IMPORT_MODELS,
     ADMIN_SHELL_CLEAR_SCOPE_ON_CLEAR_HISTORY,
-    ADMIN_SHELL_CALLBACK
+    ADMIN_SHELL_CALLBACK,
 )
 
 import django
@@ -39,7 +36,6 @@ import warnings
 
 
 class Importer:
-
     def __init__(self, import_django=None, import_models=None, extra_imports=None):
         self.import_django = import_django or ADMIN_SHELL_IMPORT_DJANGO
         self.import_models = import_models or ADMIN_SHELL_IMPORT_MODELS
@@ -57,14 +53,13 @@ class Importer:
             self._mods = {}
 
             if self.import_django and self.FROM_DJANGO:
-
                 for module_name, symbols in self.FROM_DJANGO.items():
                     try:
                         module = importlib.import_module(module_name)
                     except ImportError as e:
                         warnings.warn(
                             f"django_admin_shell - autoimport warning :: {str(e)}",
-                            ImportWarning
+                            ImportWarning,
                         )
                         continue
 
@@ -77,7 +72,7 @@ class Importer:
                                 "django_admin_shell - autoimport warning :: "
                                 f"AttributeError module '{module_name}' has no attribute "
                                 f"'{symbol_name}'",
-                                ImportWarning
+                                ImportWarning,
                             )
 
             if self.import_models:
@@ -112,13 +107,13 @@ class Importer:
                         warnings.warn(
                             f"django_admin_shell - could not import '{symbol_name}' "
                             f"from '{module_name}'",
-                            ImportWarning
+                            ImportWarning,
                         )
             except ImportError:
                 # Skip modules that can't be imported
                 warnings.warn(
                     f"django_admin_shell - could not import module '{module_name}'",
-                    ImportWarning
+                    ImportWarning,
                 )
 
         return self._scope
@@ -136,14 +131,12 @@ class Importer:
         for module, symbols in self.get_modules().items():
             if symbols:
                 buf += "from {mod} import {symbols}\n".format(
-                    mod=module,
-                    symbols=", ".join(symbols)
+                    mod=module, symbols=", ".join(symbols)
                 )
         return buf
 
 
 class Runner:
-
     def __init__(self):
         self.importer = Importer()
 
@@ -162,16 +155,16 @@ class Runner:
             exec(code, None, self.importer.get_scope())
         except Exception:
             out = traceback.format_exc()
-            status = 'error'
+            status = "error"
         else:
             out = buf.getvalue()
         finally:
             sys.stdout = tmp_stdout
 
         result = {
-            'code': code,
-            'out':  out,
-            'status': status,
+            "code": code,
+            "out": out,
+            "status": status,
         }
         return result
 
@@ -186,7 +179,6 @@ def get_dj_version():
 
 
 class ShellView(FormView):
-
     template_name = "django_admin_shell/shell.html"
     form_class = ShellForm
     success_url = "."
@@ -256,12 +248,12 @@ class ShellView(FormView):
     def get_context_data(self, **kwargs):
         """Add output to context"""
         ctx = super().get_context_data(**kwargs)
-        ctx['site_header'] = "Django admin shell"
-        ctx['has_permission'] = True
-        ctx['output'] = self.get_output()
-        ctx['python_version'] = get_py_version()
-        ctx['django_version'] = get_dj_version()
-        ctx['auto_import'] = str(self.runner.importer)
+        ctx["site_header"] = "Django admin shell"
+        ctx["has_permission"] = True
+        ctx["output"] = self.get_output()
+        ctx["python_version"] = get_py_version()
+        ctx["django_version"] = get_dj_version()
+        ctx["auto_import"] = str(self.runner.importer)
         return ctx
 
     def call_callback(self, request, response, code) -> None:
@@ -272,27 +264,23 @@ class ShellView(FormView):
             callback = import_string(callback_string)
         except Exception as e:
             warnings.warn(
-                f"Error in trying to import callback function: {str(e)}",
-                RuntimeWarning
+                f"Error in trying to import callback function: {str(e)}", RuntimeWarning
             )
             return
         if not callable(callback):
             warnings.warn(
                 f"ADMIN_SHELL_CALLBACK is set but is not callable: {callback_string}",
-                RuntimeWarning
+                RuntimeWarning,
             )
             return
         try:
             callback_data = {
-                'request': request,
-                'user': request.user,
-                'code': code,
-                'response': response,
-                'timestamp': timezone.now()
+                "request": request,
+                "user": request.user,
+                "code": code,
+                "response": response,
+                "timestamp": timezone.now(),
             }
             callback(callback_data)
         except Exception as e:
-            warnings.warn(
-                f"Error in ADMIN_SHELL_CALLBACK: {str(e)}",
-                RuntimeWarning
-            )
+            warnings.warn(f"Error in ADMIN_SHELL_CALLBACK: {str(e)}", RuntimeWarning)

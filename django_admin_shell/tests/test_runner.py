@@ -6,7 +6,6 @@ from django_admin_shell.tests.models import TestModel
 
 
 class RunnerTest(TestCase):
-
     def setUp(self):
         self.runner = Runner()
 
@@ -170,7 +169,7 @@ class RunnerTest(TestCase):
         access to call "django_admin_shell.tests.models.TestModel" directly.
         django.contrib.auth.get_user_model is one of autoimported function
         """
-        TestModel(foo='foo').save()
+        TestModel(foo="foo").save()
         code = "print(TestModel.objects.count())"
 
         with mock.patch("django_admin_shell.views.ADMIN_SHELL_IMPORT_MODELS", True):
